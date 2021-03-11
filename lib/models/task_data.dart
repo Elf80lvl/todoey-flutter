@@ -13,7 +13,7 @@ class TaskData extends ChangeNotifier {
   /* неизменяемый массив, чтобы использовать только методы, геттеры и не
   обращаться напрямую к _tasks, который теперь приватный по той же причине.
   Обращаться напрямую к _tasks нельзя потому что надо использовать
-  notifyListeners(); */
+  notifyListeners(); А он нужен для того чтобы не только добавить новый task но и перерисовать виджеты. */
   UnmodifiableListView<Task> get tasks {
     return UnmodifiableListView(_tasks);
   }
@@ -25,6 +25,16 @@ class TaskData extends ChangeNotifier {
   void addTask(String newTaskTitle) {
     final task = Task(name: newTaskTitle);
     _tasks.add(task);
+    notifyListeners();
+  }
+
+  void updateTask(Task task) {
+    task.toggleDone();
+    notifyListeners();
+  }
+
+  void deleteTask(Task task) {
+    _tasks.remove(task);
     notifyListeners();
   }
 }
